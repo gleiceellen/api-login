@@ -37,16 +37,13 @@ public class Usuario {
 	private List<Phone> phones;
 	
 	public Usuario(String nome, String email, String password) {
-		this();   
 		this.nome = nome;
         this.email = email;
         this.password = password;
     }
-	
-	public Usuario() {
-		this.created = new Date();
-        this.modified = new Date();
-        this.lastLogin = new Date();
+
+    public Usuario(){
+
 	}
 	
 	public Long getId() {
@@ -109,4 +106,15 @@ public class Usuario {
 		return lastLogin;
 	}
 
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+
+	public void setLastLogin(Date lastLogin) {
+		this.lastLogin = lastLogin;
+	}
 }

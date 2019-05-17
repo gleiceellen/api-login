@@ -1,8 +1,11 @@
 package com.gleice.apilogin.service;
 
 import com.gleice.apilogin.Exception.ExistingEmailException;
+import com.gleice.apilogin.Exception.UserNotFoundException;
 import com.gleice.apilogin.model.Usuario;
 import com.gleice.apilogin.repository.UsuarioRepository;
+
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -10,13 +13,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
-import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(MockitoJUnitRunner.class)
 @SpringBootTest
@@ -52,6 +51,30 @@ public class UsuarioCadastroServiceTest {
             .thenReturn(listaUsuariosRetornados);
 
         usuarioCadastroService.salvar(gleice);
+    }
+
+    @Test(expected = UserNotFoundException.class)
+    public void deveRetornarExcecaoCasoUsuarioNaoExista(){
+        Usuario gleice = new Usuario("Gleice", "gleice@hotmail.com", "123");
+        List<Usuario> listaUsuariosRetornados = new ArrayList<>();
+
+        Mockito.when(usuarioRepository.findByEmail("gleicedois@hotmail.com"))
+                .thenReturn(listaUsuariosRetornados);
+
+        usuarioCadastroService.retornaUsuarioPorEmail("gleicedois@hotmail.com");
+    }
+
+    @Test
+    public void deveRetornarUsuarioAtravesDoEmail(){
+        Usuario gleice = new Usuario("Gleice", "gleicedois@hotmail.com", "123");
+        List<Usuario> listaUsuariosRetornados = new ArrayList<>();
+
+        listaUsuariosRetornados.add(gleice);
+
+        Mockito.when(usuarioRepository.findByEmail("gleicedois@hotmail.com"))
+                .thenReturn(listaUsuariosRetornados);
+
+        Assert.assertEquals(gleice, usuarioCadastroService.retornaUsuarioPorEmail("gleicedois@hotmail.com"));
     }
 
 }

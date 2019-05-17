@@ -1,16 +1,30 @@
 package com.gleice.apilogin.service;
 
 import com.gleice.apilogin.Exception.ExistingEmailException;
+import com.gleice.apilogin.Exception.UserNotFoundException;
 import com.gleice.apilogin.model.Usuario;
 import com.gleice.apilogin.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class UsuarioCadastroService {
 
+    private BCryptPasswordEncoder passwordEncoder;
+
+    private UsuarioRepository usuarioRepository;
+
     @Autowired
-    public UsuarioRepository usuarioRepository;
+    public UsuarioCadastroService(UsuarioRepository usuarioRepository,  BCryptPasswordEncoder passwordEncoder){
+        this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public UsuarioCadastroService(){}
 
     public void salvar(Usuario usuario) {
         if(usuario == null || naoContemTodosArgumentos(usuario))
@@ -19,19 +33,27 @@ public class UsuarioCadastroService {
         if(emailExiste(usuario))
             throw new ExistingEmailException();
 
+        usuario.setCreated(new Date());
+        usuario.setModified(new Date());
+        usuario.setLastLogin(new Date());
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         usuarioRepository.save(usuario);
     }
 
-    public boolean naoContemTodosArgumentos(Usuario usuario){
-        if(usuario.getNome().isEmpty() || usuario.getEmail().isEmpty() || usuario.getPassword().isEmpty())
-            return true;
-        return false;
+    private boolean naoContemTodosArgumentos(Usuario usuario){
+        return usuario.getNome().trim().isEmpty() || usuario.getEmail().trim().isEmpty() || usuario.getPassword().trim().isEmpty();
     }
 
-    public boolean emailExiste(Usuario usuario) {
-        if(!usuarioRepository.findByEmail(usuario.getEmail()).isEmpty())
-            return true;
+    private boolean emailExiste(Usuario usuario) {
+        return !usuarioRepository.findByEmail(usuario.getEmail().trim()).isEmpty();
 
-        return false;
+    }
+
+    public Usuario retornaUsuarioPorEmail(String email) {
+        List<Usuario> usuarios = usuarioRepository.findByEmail(email);
+        if (usuarios.isEmpty())
+            throw new UserNotFoundException();
+
+        return usuarios.get(0);
     }
 }

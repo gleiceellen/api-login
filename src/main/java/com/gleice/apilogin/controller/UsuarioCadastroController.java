@@ -14,19 +14,19 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 public class UsuarioCadastroController {
 
-    @Autowired
     private UsuarioCadastroService usuarioCadastroService;
+
+    @Autowired
+    public UsuarioCadastroController(UsuarioCadastroService usuarioCadastroService){
+        this.usuarioCadastroService = usuarioCadastroService;
+    }
 
     @PostMapping("/usuario")
     public ResponseEntity<Usuario> salvar(@RequestBody Usuario usuario){
-        try{
-            usuarioCadastroService.salvar(usuario);
-            return new ResponseEntity<>(usuario, HttpStatus.OK);
-
-        } catch (ExistingEmailException exc) {
-                throw new ResponseStatusException(HttpStatus.CONFLICT, "Email já existe!", exc);
-        }
+        usuarioCadastroService.salvar(usuario);
+        return new ResponseEntity<>(usuario, HttpStatus.OK);
     }
 
 
 }
+
