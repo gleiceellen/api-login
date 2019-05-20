@@ -43,6 +43,14 @@ public class Usuario {
         this.phones = phones;
     }
 
+	public Usuario(Long id, String nome, String email, String password, List<Phone> phones) {
+		this.id = id;
+		this.nome = nome;
+		this.email = email;
+		this.password = password;
+		this.phones = phones;
+	}
+
     public Usuario(){
 
 	}

@@ -10,6 +10,7 @@ import java.util.List;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class UsuarioDTO {
 
+    private Long id;
     private String nome;
     private String email;
     private String password;
@@ -20,7 +21,7 @@ public class UsuarioDTO {
 //    private String token;
 
     public Usuario transformaParaObjeto() {
-        return new Usuario(getNome(), getEmail(), getPassword(), getPhones());
+        return new Usuario(getId(), getNome(), getEmail(), getPassword(), getPhones());
     }
 
     public String getNome() {
@@ -53,6 +54,14 @@ public class UsuarioDTO {
 
     public void setPhones(List<Phone> phones) {
         this.phones = phones;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
 //    public Date getCreated() {

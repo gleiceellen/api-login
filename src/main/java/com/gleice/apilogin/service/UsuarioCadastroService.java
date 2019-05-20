@@ -30,15 +30,27 @@ public class UsuarioCadastroService {
         if(usuario == null || naoContemTodosArgumentos(usuario))
             throw new IllegalArgumentException();
 
-        if(emailExiste(usuario))
+        if(emailExiste(usuario) && usuario.getId() == null)
             throw new ExistingEmailException();
 
-        usuario.setCreated(new Date());
-        usuario.setModified(new Date());
-        usuario.setLastLogin(new Date());
-        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
-        return usuarioRepository.save(usuario);
+        if(isEdicao(usuario)){
+            usuario.setModified(new Date());
+            return usuarioRepository.save(usuario);
+        } else {
+            usuario.setCreated(new Date());
+            usuario.setModified(new Date());
+            usuario.setLastLogin(new Date());
+            usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+            return usuarioRepository.save(usuario);
+        }
     }
+
+    private boolean isEdicao(Usuario usuario){
+        if(usuario.getCreated() != null)
+            return true;
+        return false;
+    }
+
 
     private boolean naoContemTodosArgumentos(Usuario usuario){
         return usuario.getNome().trim().isEmpty() || usuario.getEmail().trim().isEmpty() || usuario.getPassword().trim().isEmpty();
