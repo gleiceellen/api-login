@@ -2,6 +2,7 @@ package com.gleice.apilogin.service;
 
 import com.gleice.apilogin.Exception.ExistingEmailException;
 import com.gleice.apilogin.Exception.UserNotFoundException;
+import com.gleice.apilogin.model.Phone;
 import com.gleice.apilogin.model.Usuario;
 import com.gleice.apilogin.repository.UsuarioRepository;
 
@@ -35,14 +36,20 @@ public class UsuarioCadastroServiceTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void deveRetornarExceptionCasoUsuarioNãoContenhaTodosAtributos() {
-        Usuario gleice = new Usuario("Gleice", "gleice@hotmail.com", "123");
+        List<Phone> phones = new ArrayList<>();
+        Phone phone = new Phone("62", "99988-8888");
+        phones.add(phone);
+        Usuario gleice = new Usuario("Gleice", "gleice@hotmail.com", "123", phones);
         gleice.setEmail("");
         usuarioCadastroService.salvar(gleice);
     }
 
     @Test(expected = ExistingEmailException.class)
     public void deveRetornarExceptionCasoJaEstejaCadastrado() {
-        Usuario gleice = new Usuario("Gleice", "gleice@hotmail.com", "123");
+        List<Phone> phones = new ArrayList<>();
+        Phone phone = new Phone("62", "99988-8888");
+        phones.add(phone);
+        Usuario gleice = new Usuario("Gleice", "gleice@hotmail.com", "123", phones);
         List<Usuario> listaUsuariosRetornados = new ArrayList<>();
 
         listaUsuariosRetornados.add(gleice);
@@ -55,7 +62,10 @@ public class UsuarioCadastroServiceTest {
 
     @Test(expected = UserNotFoundException.class)
     public void deveRetornarExcecaoCasoUsuarioNaoExista(){
-        Usuario gleice = new Usuario("Gleice", "gleice@hotmail.com", "123");
+        List<Phone> phones = new ArrayList<>();
+        Phone phone = new Phone("62", "99988-8888");
+        phones.add(phone);
+        Usuario gleice = new Usuario("Gleice", "gleice@hotmail.com", "123", phones);
         List<Usuario> listaUsuariosRetornados = new ArrayList<>();
 
         Mockito.when(usuarioRepository.findByEmail("gleicedois@hotmail.com"))
@@ -66,7 +76,10 @@ public class UsuarioCadastroServiceTest {
 
     @Test
     public void deveRetornarUsuarioAtravesDoEmail(){
-        Usuario gleice = new Usuario("Gleice", "gleicedois@hotmail.com", "123");
+        List<Phone> phones = new ArrayList<>();
+        Phone phone = new Phone("62", "99988-8888");
+        phones.add(phone);
+        Usuario gleice = new Usuario("Gleice", "gleice@hotmail.com", "123", phones);
         List<Usuario> listaUsuariosRetornados = new ArrayList<>();
 
         listaUsuariosRetornados.add(gleice);

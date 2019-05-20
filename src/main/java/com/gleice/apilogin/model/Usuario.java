@@ -31,15 +31,16 @@ public class Usuario {
     private Date created;
     private Date modified;
     private Date lastLogin;
-    private String token;
+    //private String token;
 	
 	@OneToMany(cascade=CascadeType.ALL)
 	private List<Phone> phones;
 	
-	public Usuario(String nome, String email, String password) {
+	public Usuario(String nome, String email, String password, List<Phone> phones) {
 		this.nome = nome;
         this.email = email;
         this.password = password;
+        this.phones = phones;
     }
 
     public Usuario(){
@@ -86,13 +87,13 @@ public class Usuario {
 		this.password = password;
 	}
 	
-	public void criarToken() {
-		this.token = UUID.randomUUID().toString();
-	}
+	//public void criarToken() {
+	//	this.token = UUID.randomUUID().toString();
+	//}
 	
-	public String getToken() {
-		return this.token;
-	}
+	//public String getToken() {
+	//	return this.token;
+	//}
 
 	public Date getModified() {
 		return modified;

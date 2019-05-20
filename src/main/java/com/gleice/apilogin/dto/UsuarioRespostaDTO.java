@@ -1,9 +1,11 @@
 package com.gleice.apilogin.dto;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.gleice.apilogin.model.Phone;
 import com.gleice.apilogin.model.Usuario;
 
 import java.util.Date;
+import java.util.List;
 
 @JsonAutoDetect(fieldVisibility= JsonAutoDetect.Visibility.ANY)
 public class UsuarioRespostaDTO {
@@ -15,9 +17,9 @@ public class UsuarioRespostaDTO {
     private Date created;
     private Date modified;
     private Date lastLogin;
-    private String token;
+    private List<Phone> phones;
 
-    public UsuarioRespostaDTO(Long id, String nome, String email, String password, Date created, Date modified, Date lastLogin) {
+    public UsuarioRespostaDTO(Long id, String nome, String email, String password, Date created, Date modified, Date lastLogin, List<Phone> phones) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -25,6 +27,7 @@ public class UsuarioRespostaDTO {
         this.created = created;
         this.modified = modified;
         this.lastLogin = lastLogin;
+        this.phones = phones;
     }
 
     public UsuarioRespostaDTO(){
@@ -32,7 +35,7 @@ public class UsuarioRespostaDTO {
     }
 
     public static UsuarioRespostaDTO transformaEmDTO(Usuario usuario) {
-        return new UsuarioRespostaDTO(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getPassword(), usuario.getCreated(), usuario.getModified(), usuario.getLastLogin());
+        return new UsuarioRespostaDTO(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getPassword(), usuario.getCreated(), usuario.getModified(), usuario.getLastLogin(), usuario.getPhones());
     }
 
     public String getNome() {
@@ -77,13 +80,5 @@ public class UsuarioRespostaDTO {
 
     public void setLastLogin(Date lastLogin) {
         this.lastLogin = lastLogin;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 }
