@@ -26,7 +26,7 @@ public class UsuarioCadastroService {
 
     public UsuarioCadastroService(){}
 
-    public void salvar(Usuario usuario) {
+    public Usuario salvar(Usuario usuario) {
         if(usuario == null || naoContemTodosArgumentos(usuario))
             throw new IllegalArgumentException();
 
@@ -37,7 +37,7 @@ public class UsuarioCadastroService {
         usuario.setModified(new Date());
         usuario.setLastLogin(new Date());
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
-        usuarioRepository.save(usuario);
+        return usuarioRepository.save(usuario);
     }
 
     private boolean naoContemTodosArgumentos(Usuario usuario){

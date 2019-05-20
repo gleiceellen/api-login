@@ -1,6 +1,8 @@
 package com.gleice.apilogin.controller;
 
 import com.gleice.apilogin.Exception.ExistingEmailException;
+import com.gleice.apilogin.dto.UsuarioDTO;
+import com.gleice.apilogin.dto.UsuarioRespostaDTO;
 import com.gleice.apilogin.model.Usuario;
 import com.gleice.apilogin.service.UsuarioCadastroService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +24,9 @@ public class UsuarioCadastroController {
     }
 
     @PostMapping("/usuario")
-    public ResponseEntity<Usuario> salvar(@RequestBody Usuario usuario){
-        usuarioCadastroService.salvar(usuario);
-        return new ResponseEntity<>(usuario, HttpStatus.OK);
+    public ResponseEntity<UsuarioRespostaDTO> salvar(@RequestBody UsuarioDTO usuarioDTO){
+        Usuario usuario = usuarioCadastroService.salvar(usuarioDTO.transformaParaObjeto());
+        return  new ResponseEntity<>(UsuarioRespostaDTO.transformaEmDTO(usuario), HttpStatus.CREATED);
     }
 
 

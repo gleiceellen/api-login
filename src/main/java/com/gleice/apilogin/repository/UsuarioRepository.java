@@ -4,10 +4,12 @@ import com.gleice.apilogin.model.Usuario;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 
 @Repository
 public interface UsuarioRepository extends CrudRepository<Usuario, Long> {
     List<Usuario> findByEmail(String email);
 
+    List<Usuario> findByToken(String token);
 }
